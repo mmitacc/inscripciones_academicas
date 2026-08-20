@@ -4,8 +4,7 @@ import type { Estudiante } from '../types/estudiante.interface.js';
 import { estudiantes } from '../types/estudiante.interface.js';
 import type { RequestQuery } from '../types/global.types.js';
 
-
-// Método para retornar la lista completa de estudiantes
+// Método para retornar querys o la lista completa de estudiantes
 export const getQueryEstudiantes = ((req: Request, res: Response) => {
     try {
         if (estudiantes.length === 0) {
@@ -50,7 +49,7 @@ export const getIdEstudiante = ((req: Request, res: Response) => {
         const id = Number(req.params.id);
         const estudianteSearch = estudiantes.find((e: Estudiante) => e.id === id);
         if (!estudianteSearch) {
-            return res.status(400).json({ error: `El estudiante con el id = ${id}, no existe.` });
+            return res.status(404).json({ error: `El estudiante con el id = ${id}, no existe.` });
         }
         res.status(200).json(estudianteSearch);
     } catch (error) {
