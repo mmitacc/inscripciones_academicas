@@ -1,11 +1,10 @@
 import type { Request, Response } from 'express';
-
-import type { Estudiante } from '../types/estudiante.interface.js';
+import type { Estudiante, EstudiantePatchQuery } from '../types/estudiante.interface.js';
 import { estudiantes } from '../types/estudiante.interface.js';
 import type { RequestQuery } from '../types/global.types.js';
 
 // Método para retornar querys o la lista completa de estudiantes
-export const getQueryEstudiantes = ((req: Request, res: Response) => {
+export const getQueryEstudiantes = ((req: Request<EstudiantePatchQuery>, res: Response) => {
     try {
         if (estudiantes.length === 0) {
             return res.status(400).json({ status: 'La Base de Datos <Estudiante>, esta vacia.' });
@@ -51,7 +50,7 @@ export const getIdEstudiante = ((req: Request, res: Response) => {
         if (!estudianteSearch) {
             return res.status(404).json({ error: `El estudiante con el id = ${id}, no existe.` });
         }
-        res.status(200).json(estudianteSearch);
+        res.status(200).json({ 'Estudiante ubicado exitosamente': estudianteSearch });
     } catch (error) {
         const msgError = error instanceof Error ? error.message : 'Error interno desconocido';
         res.status(500).json({ error: msgError });
@@ -62,7 +61,7 @@ export const getIdEstudiante = ((req: Request, res: Response) => {
 export const newEstudiante = ((req: Request, res: Response) => {
     try {
         const { nombre, email, bootcamp } = req.body;
-        if (!email) {
+        if (email === undefined) {
             return res.status(400).json({ error: "El campo 'email' es obligatorio." })
         }
         const newId: number = estudiantes.length === 0 ? 1 : estudiantes.length + 1;
@@ -73,7 +72,7 @@ export const newEstudiante = ((req: Request, res: Response) => {
             bootcamp: bootcamp ?? ''
         }
         estudiantes.push(newEstudiante);
-        res.status(201).json(newEstudiante);
+        res.status(201).json({ 'Estudiante Registrado correctamente': newEstudiante });
     } catch (error) {
         const msgError = error instanceof Error ? error.message : 'Error interno desconocido';
         res.status(500).json({ error: msgError });
@@ -89,7 +88,7 @@ export const actualizarTodoEstudiante = ((req: Request, res: Response) => {
             return res.status(404).json({ error: `El estudiante con el id = ${id}, no existe.` })
         }
         const { nombre, email, bootcamp } = req.body;
-        if (!email) {
+        if (email === undefined) {
             return res.status(400).json({ error: "El campo 'email' es obligatorio." })
         }
         estudiantes[index] = {
@@ -98,7 +97,7 @@ export const actualizarTodoEstudiante = ((req: Request, res: Response) => {
             email,
             bootcamp: bootcamp ?? ''
         };
-        res.status(200).json(estudiantes[index]);
+        res.status(200).json({ 'Actualización Exitosa': estudiantes[index] });
     } catch (error) {
         const msgError = error instanceof Error ? error.message : 'Error interno desconocido';
         res.status(500).json({ error: msgError });
@@ -121,7 +120,7 @@ export const actualizarAlgunDatoEstudiante = ((req: Request, res: Response) => {
             email: email ?? currentEstudiante.email,
             bootcamp: bootcamp ?? currentEstudiante.bootcamp
         };
-        res.status(200).json(estudiantes[index]);
+        res.status(200).json({ 'Actualización Exitosa': estudiantes[index] });
     } catch (error) {
         const msgError = error instanceof Error ? error.message : 'Error interno desconocido';
         res.status(500).json({ error: msgError });
@@ -137,7 +136,7 @@ export const eliminarEstudiante = ((req: Request, res: Response) => {
             return res.status(404).json({ error: `El estudiante con el id = ${id}, no existe.` })
         }
         const [deleteEstudiante] = estudiantes.splice(index, 1);
-        res.status(200).json(deleteEstudiante);
+        res.status(200).json({ 'Estudiante eliminado': deleteEstudiante });
     } catch (error) {
         const msgError = error instanceof Error ? error.message : 'Error interno desconocido';
         res.status(500).json({ error: msgError });

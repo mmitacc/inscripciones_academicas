@@ -1,0 +1,307 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "API de Instrucciones Académicas",
+    "description": "Documentación de la API REST del MP-S2",
+    "version": "1.0.0"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/api/status": {
+      "get": {
+        "tags": [
+          "Estado del Servidor"
+        ],
+        "summary": "Verificar el estado de la API",
+        "description": "Retorna si el servicio se encuentra activo y respondiendo.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/estudiantes/": {
+      "get": {
+        "tags": [
+          "Estudiantes"
+        ],
+        "summary": "Obtener y filtrar estudiantes",
+        "description": "Retorna la lista de estudiantes permitiendo filtrar por nombre, email o bootcamp.",
+        "parameters": [
+          {
+            "name": "nombre",
+            "in": "query",
+            "description": "Filtro por nombre del estudiante",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "description": "Filtro por correo electrónico",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "bootcamp",
+            "in": "query",
+            "description": "Filtro por nombre del bootcamp",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Estudiantes"
+        ],
+        "summary": "Crear un registro de estudiante nuevo",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Datos para el nuevo estudiante. Solo el email es obligatorio. Pero si no ingresan los otros datos, se grabaran como vacios",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "required": {
+                  "type": "array",
+                  "example": [
+                    "email"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "nombre": {
+                  "type": "string",
+                  "example": "Juan Pérez"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "juan.perez@gmail.com"
+                },
+                "bootcamp": {
+                  "type": "string",
+                  "example": "Fullstack"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/estudiantes/{id}": {
+      "get": {
+        "tags": [
+          "Estudiantes"
+        ],
+        "summary": "Obtener un estudiante por ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID numérico del estudiante"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Estudiantes"
+        ],
+        "summary": "Actualizar todos los datos de un estudiante",
+        "description": "Modifica todos campos (nombre, email, bootcamp) de un estudiante buscando por su ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "description": "ID numérico del estudiante a actualizar"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Campos que se desean actualizar. Solo el email es obligatorio. Pero si no ingresan los otros datos, se grabaran como vacios",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "required": {
+                  "type": "array",
+                  "example": [
+                    "email"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "nombre": {
+                  "type": "string",
+                  "example": "Juan"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "juan@gmail.com"
+                },
+                "bootcamp": {
+                  "type": "string",
+                  "example": "Fullstack"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Estudiantes"
+        ],
+        "summary": "Actualizar datos parciales de un estudiante",
+        "description": "Modifica uno o varios campos (nombre, email, bootcamp) de un estudiante buscando por su ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "description": "ID numérico del estudiante a actualizar"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Puede llenar uno o más campos para actualizarlos.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nombre": {
+                  "type": "string",
+                  "example": "Juan"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "juan@gmail.com"
+                },
+                "bootcamp": {
+                  "type": "string",
+                  "example": "Fullstack"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Estudiantes"
+        ],
+        "summary": "Eliminar un estudiante por ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID numérico del estudiante"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  }
+}
