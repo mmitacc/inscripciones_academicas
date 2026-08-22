@@ -45,7 +45,7 @@ export const validarFormatoEmail = ((req: Request, res: Response, next: NextFunc
         if (email !== undefined) {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(email)) {
-                return res.status(400).json({ error: 'El campo "email", debe tener un formato correcto.' })
+                return res.status(400).json({ error: 'El campo <email>, debe tener un formato correcto.' })
             }
         }
         return next();

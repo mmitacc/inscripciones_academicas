@@ -86,10 +86,9 @@ router.post('/', validarFormatoEmail, (req: Request, res: Response) => {
     #swagger.summary = 'Crear un registro de estudiante nuevo'
     #swagger.parameters['body'] = {
         in: 'body',
-        description: 'Datos para el nuevo estudiante. Solo el email es obligatorio. Pero si no ingresan los otros datos, se grabaran como vacios',
+        description: 'Datos para el nuevo estudiante. Solo el \"email\" es obligatorio. Pero si no ingresan los otros datos, se grabaran como vacios',
         required: true,
         schema: {
-            required: ['email'],
             nombre: 'Juan Pérez',
             email: 'juan.perez@gmail.com',
             bootcamp: 'Fullstack'
@@ -127,10 +126,9 @@ router.put('/:id', validarIsEmptyDb, validarId, validarFormatoEmail, (req: Reque
     }
     #swagger.parameters['body'] = {
         in: 'body',
-        description: 'Campos que se desean actualizar. Solo el email es obligatorio. Pero si no ingresan los otros datos, se grabaran como vacios',
+        description: 'Campos que se desean actualizar. Solo el \"email\" es obligatorio. Pero si no ingresan los otros datos, se grabaran como vacios',
         required: true,
         schema: {
-            required: ['email'],
             nombre: 'Juan',
             email: 'juan@gmail.com',
             bootcamp: 'Fullstack'

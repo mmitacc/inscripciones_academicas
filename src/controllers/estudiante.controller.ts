@@ -10,13 +10,13 @@ export const getQueryEstudiantes = ((req: Request<EstudiantePatchQuery>, res: Re
             return res.status(400).json({ status: 'La Base de Datos <Estudiante>, esta vacia.' });
         }
         const query = req.query as RequestQuery<Estudiante>;
-        const { nombre, email, bootcamp } = query;
+        const { name, email, bootcamp } = query;
         let queryEstudiantes: Estudiante[] = [...estudiantes];
         let enviroment: string = 'Filtro por ';
-        // query: nombre
-        if (nombre) {
-            queryEstudiantes = queryEstudiantes.filter(e => e.nombre.toLowerCase().includes(nombre.toLowerCase()))
-            enviroment += ':: nombre ';
+        // query: name
+        if (name) {
+            queryEstudiantes = queryEstudiantes.filter(e => e.name.toLowerCase().includes(name.toLowerCase()))
+            enviroment += ':: name ';
         }
         // query: email
         if (email) {
@@ -35,10 +35,11 @@ export const getQueryEstudiantes = ((req: Request<EstudiantePatchQuery>, res: Re
         } else {
             data = [...queryEstudiantes];
         }
-        res.status(200).json({ Enviroment: enviroment, Total: data.length, Data: data });
+        res.status(200).json(data);
     } catch (error) {
         const msgError = error instanceof Error ? error.message : 'Error interno desconocido';
-        res.status(500).json({ error: msgError });
+        console.error('[ERROR/datos]', msgError);
+        res.status(500).json({ error: 'Error interno del Servidor' });
     }
 });
 
@@ -53,29 +54,31 @@ export const getIdEstudiante = ((req: Request, res: Response) => {
         res.status(200).json({ 'Estudiante ubicado exitosamente': estudianteSearch });
     } catch (error) {
         const msgError = error instanceof Error ? error.message : 'Error interno desconocido';
-        res.status(500).json({ error: msgError });
+        console.error('[ERROR/datos]', msgError);
+        res.status(500).json({ error: 'Error interno del Servidor' });
     }
 });
 
 // Método para guardar a un estudiante nuevo
 export const newEstudiante = ((req: Request, res: Response) => {
     try {
-        const { nombre, email, bootcamp } = req.body;
-        if (email === undefined) {
+        const { name, email, bootcamp } = req.body;
+        if (!email) {
             return res.status(400).json({ error: "El campo 'email' es obligatorio." })
         }
         const newId: number = estudiantes.length === 0 ? 1 : estudiantes.length + 1;
         const newEstudiante: Estudiante = {
             id: newId,
-            nombre: nombre ?? '',
+            name: name ?? '',
             email,
             bootcamp: bootcamp ?? ''
         }
         estudiantes.push(newEstudiante);
-        res.status(201).json({ 'Estudiante Registrado correctamente': newEstudiante });
+        res.status(201).json(newEstudiante);
     } catch (error) {
         const msgError = error instanceof Error ? error.message : 'Error interno desconocido';
-        res.status(500).json({ error: msgError });
+        console.error('[ERROR/datos]', msgError);
+        res.status(500).json({ error: 'Error interno del Servidor' });
     }
 });
 
@@ -87,20 +90,21 @@ export const actualizarTodoEstudiante = ((req: Request, res: Response) => {
         if (index === -1) {
             return res.status(404).json({ error: `El estudiante con el id = ${id}, no existe.` })
         }
-        const { nombre, email, bootcamp } = req.body;
+        const { name, email, bootcamp } = req.body;
         if (email === undefined) {
             return res.status(400).json({ error: "El campo 'email' es obligatorio." })
         }
         estudiantes[index] = {
             id,
-            nombre: nombre ?? '',
+            name: name ?? '',
             email,
             bootcamp: bootcamp ?? ''
         };
         res.status(200).json({ 'Actualización Exitosa': estudiantes[index] });
     } catch (error) {
         const msgError = error instanceof Error ? error.message : 'Error interno desconocido';
-        res.status(500).json({ error: msgError });
+        console.error('[ERROR/datos]', msgError);
+        res.status(500).json({ error: 'Error interno del Servidor' });
     }
 });
 
@@ -112,18 +116,19 @@ export const actualizarAlgunDatoEstudiante = ((req: Request, res: Response) => {
         if (index === -1) {
             return res.status(404).json({ error: `El estudiante con el id = ${id}, no existe.` })
         }
-        const { nombre, email, bootcamp } = req.body;
+        const { name, email, bootcamp } = req.body;
         const currentEstudiante: Estudiante = estudiantes[index]!;
         estudiantes[index] = {
             id,
-            nombre: nombre ?? currentEstudiante.nombre,
+            name: name ?? currentEstudiante.name,
             email: email ?? currentEstudiante.email,
             bootcamp: bootcamp ?? currentEstudiante.bootcamp
         };
         res.status(200).json({ 'Actualización Exitosa': estudiantes[index] });
     } catch (error) {
         const msgError = error instanceof Error ? error.message : 'Error interno desconocido';
-        res.status(500).json({ error: msgError });
+        console.error('[ERROR/datos]', msgError);
+        res.status(500).json({ error: 'Error interno del Servidor' });
     }
 });
 
@@ -139,6 +144,7 @@ export const eliminarEstudiante = ((req: Request, res: Response) => {
         res.status(200).json({ 'Estudiante eliminado': deleteEstudiante });
     } catch (error) {
         const msgError = error instanceof Error ? error.message : 'Error interno desconocido';
-        res.status(500).json({ error: msgError });
+        console.error('[ERROR/datos]', msgError);
+        res.status(500).json({ error: 'Error interno del Servidor' });
     }
 });

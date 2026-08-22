@@ -11,10 +11,10 @@
     "http"
   ],
   "paths": {
-    "/api/status": {
+    "/": {
       "get": {
         "tags": [
-          "Estado del Servidor"
+          "Initial Test"
         ],
         "summary": "Verificar el estado de la API",
         "description": "Retorna si el servicio se encuentra activo y respondiendo.",
@@ -28,7 +28,7 @@
         }
       }
     },
-    "/api/estudiantes/": {
+    "/api/students/": {
       "get": {
         "tags": [
           "Estudiantes"
@@ -83,20 +83,11 @@
           {
             "name": "body",
             "in": "body",
-            "description": "Datos para el nuevo estudiante. Solo el email es obligatorio. Pero si no ingresan los otros datos, se grabaran como vacios",
+            "description": "Datos para el nuevo estudiante. Solo el 'email' es obligatorio. Pero si no ingresan los otros datos, se grabaran como vacios",
             "required": true,
             "schema": {
               "type": "object",
               "properties": {
-                "required": {
-                  "type": "array",
-                  "example": [
-                    "email"
-                  ],
-                  "items": {
-                    "type": "string"
-                  }
-                },
                 "nombre": {
                   "type": "string",
                   "example": "Juan Pérez"
@@ -126,7 +117,7 @@
         }
       }
     },
-    "/api/estudiantes/{id}": {
+    "/api/students/{id}": {
       "get": {
         "tags": [
           "Estudiantes"
@@ -174,20 +165,11 @@
           {
             "name": "body",
             "in": "body",
-            "description": "Campos que se desean actualizar. Solo el email es obligatorio. Pero si no ingresan los otros datos, se grabaran como vacios",
+            "description": "Campos que se desean actualizar. Solo el 'email' es obligatorio. Pero si no ingresan los otros datos, se grabaran como vacios",
             "required": true,
             "schema": {
               "type": "object",
               "properties": {
-                "required": {
-                  "type": "array",
-                  "example": [
-                    "email"
-                  ],
-                  "items": {
-                    "type": "string"
-                  }
-                },
                 "nombre": {
                   "type": "string",
                   "example": "Juan"

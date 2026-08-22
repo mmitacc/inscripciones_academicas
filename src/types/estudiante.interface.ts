@@ -1,7 +1,7 @@
 // Modelo de tipo de variables para objetos 'Estudiante'
 export interface Estudiante {
     id: number;
-    nombre: string;
+    name: string;
     email: string;
     bootcamp: string;
 };
