@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
-import { estudiantes } from "../types/estudiante.interface.js";
+import { loadEstudianteDB } from "../data/estudiante.conect.js";
+
 
 export const validarId = ((req: Request, res: Response, next: NextFunction) => {
     try {
@@ -14,8 +15,9 @@ export const validarId = ((req: Request, res: Response, next: NextFunction) => {
     }
 });
 
-export const validarIsEmptyDb = ((_req: Request, res: Response, next: NextFunction) => {
+export const validarIsEmptyDb = (async (_req: Request, res: Response, next: NextFunction) => {
     try {
+        const estudiantes = await loadEstudianteDB();
         if (estudiantes.length === 0) {
             return res.status(404).json({ status: 'La Base de Datos <Estudiante>, esta vacia.' });
         }

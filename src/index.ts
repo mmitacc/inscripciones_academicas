@@ -5,6 +5,7 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerOutput from '../src/swagger_output.json' with {type: 'json'};
 import { errorHandler } from './middlewares/errorHandler.js';
 import cors from 'cors';
+import { loadEstudianteDB } from './data/estudiante.conect.js';
 
 const app = express();
 const PORT = process.env.PORT ?? 3000;
@@ -48,7 +49,7 @@ app.use(errorHandler)
 
 // Inicialización del servidor
 console.clear();
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
     try {
         console.log(`Servidor corriendo en... http://localhost:${PORT}`);
     } catch (error) {

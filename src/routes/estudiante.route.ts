@@ -10,10 +10,10 @@ router.get('/', validarIsEmptyDb, (req: Request, res: Response) => {
     /*  
     #swagger.tags = ['Estudiantes']
     #swagger.summary = 'Obtener y filtrar estudiantes'
-    #swagger.description = 'Retorna la lista de estudiantes permitiendo filtrar por nombre, email o bootcamp.'
-    #swagger.parameters['nombre'] = {
+    #swagger.description = 'Retorna la lista de estudiantes permitiendo filtrar por name, email o bootcamp.'
+    #swagger.parameters['name'] = {
         in: 'query',
-        description: 'Filtro por nombre del estudiante',
+        description: 'Filtro por name del estudiante',
         required: false,
         type: 'string'
     }
@@ -25,7 +25,7 @@ router.get('/', validarIsEmptyDb, (req: Request, res: Response) => {
     }
     #swagger.parameters['bootcamp'] = {
         in: 'query',
-        description: 'Filtro por nombre del bootcamp',
+        description: 'Filtro por name del bootcamp',
         required: false,
         type: 'string'
     }
@@ -64,7 +64,7 @@ router.get('/:id', validarIsEmptyDb, validarId, (req: Request, res: Response) =>
     #swagger.responses = {
         200: {
             description: 'Estudiante ubicado exitosamente.',
-            schema: { id: 1, nombre: 'Juan', email: 'juan@gmail.com', bootcamp: 'Developer'}
+            schema: { id: 1, name: 'Juan', email: 'juan@gmail.com', bootcamp: 'Developer'}
         },
         404: {
             description: 'El estudiante solicitado no existe.',
@@ -89,7 +89,7 @@ router.post('/', validarFormatoEmail, (req: Request, res: Response) => {
         description: 'Datos para el nuevo estudiante. Solo el \"email\" es obligatorio. Pero si no ingresan los otros datos, se grabaran como vacios',
         required: true,
         schema: {
-            nombre: 'Juan Pérez',
+            name: 'Juan Pérez',
             email: 'juan.perez@gmail.com',
             bootcamp: 'Fullstack'
         }
@@ -97,7 +97,7 @@ router.post('/', validarFormatoEmail, (req: Request, res: Response) => {
     #swagger.responses = {
         200: {
             description: 'Estudiante registrado correctamente',
-            schema: { id: 1, nombre: 'Juan', email: 'juan@gmail.com', bootcamp: 'Developer'}
+            schema: { id: 1, name: 'Juan', email: 'juan@gmail.com', bootcamp: 'Developer'}
         },
         400: {
             description: 'El estudiante solicitado no existe.',
@@ -117,7 +117,7 @@ router.put('/:id', validarIsEmptyDb, validarId, validarFormatoEmail, (req: Reque
     /*
     #swagger.tags = ['Estudiantes']
     #swagger.summary = 'Actualizar todos los datos de un estudiante'
-    #swagger.description = 'Modifica todos campos (nombre, email, bootcamp) de un estudiante buscando por su ID.'
+    #swagger.description = 'Modifica todos campos (name, email, bootcamp) de un estudiante buscando por su ID.'
     #swagger.parameters['id'] = {
         in: 'path',
         description: 'ID numérico del estudiante a actualizar',
@@ -129,7 +129,7 @@ router.put('/:id', validarIsEmptyDb, validarId, validarFormatoEmail, (req: Reque
         description: 'Campos que se desean actualizar. Solo el \"email\" es obligatorio. Pero si no ingresan los otros datos, se grabaran como vacios',
         required: true,
         schema: {
-            nombre: 'Juan',
+            name: 'Juan',
             email: 'juan@gmail.com',
             bootcamp: 'Fullstack'
         }
@@ -137,7 +137,7 @@ router.put('/:id', validarIsEmptyDb, validarId, validarFormatoEmail, (req: Reque
     #swagger.responses = {
         200: {
             description: 'Actualización realizada con éxito.',
-            schema: { id: 1, nombre: 'Juan', email: 'juan@gmail.com', bootcamp: 'Developer'}
+            schema: { id: 1, name: 'Juan', email: 'juan@gmail.com', bootcamp: 'Developer'}
         },
         404: {
             description: 'El estudiante solicitado no existe.',
@@ -157,7 +157,7 @@ router.patch('/:id', validarIsEmptyDb, validarId, validarFormatoEmail, (req: Req
     /*
     #swagger.tags = ['Estudiantes']
     #swagger.summary = 'Actualizar datos parciales de un estudiante'
-    #swagger.description = 'Modifica uno o varios campos (nombre, email, bootcamp) de un estudiante buscando por su ID.'
+    #swagger.description = 'Modifica uno o varios campos (name, email, bootcamp) de un estudiante buscando por su ID.'
     #swagger.parameters['id'] = {
         in: 'path',
         description: 'ID numérico del estudiante a actualizar',
@@ -169,7 +169,7 @@ router.patch('/:id', validarIsEmptyDb, validarId, validarFormatoEmail, (req: Req
         description: 'Puede llenar uno o más campos para actualizarlos.',
         required: true,
         schema: {
-            nombre: 'Juan',
+            name: 'Juan',
             email: 'juan@gmail.com',
             bootcamp: 'Fullstack'
         }
@@ -177,7 +177,7 @@ router.patch('/:id', validarIsEmptyDb, validarId, validarFormatoEmail, (req: Req
     #swagger.responses = {
         200: {
             description: 'Actualización realizada con éxito.',
-            schema: { id: 1, nombre: 'Juan', email: 'juan@gmail.com', bootcamp: 'Developer'}
+            schema: { id: 1, name: 'Juan', email: 'juan@gmail.com', bootcamp: 'Developer'}
         },
         404: {
             description: 'El estudiante solicitado no existe.',
@@ -206,7 +206,7 @@ router.delete('/:id', validarIsEmptyDb, validarId, (req: Request, res: Response)
     #swagger.responses = {
         200: {
             description: 'Estudiante eliminado',
-            schema: { id: 1, nombre: 'Juan', email: 'juan@gmail.com', bootcamp: 'Developer'}
+            schema: { id: 1, name: 'Juan', email: 'juan@gmail.com', bootcamp: 'Developer'}
         },
         404: {
             description: 'Estudiante no encontrado',

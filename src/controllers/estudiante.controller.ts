@@ -1,11 +1,12 @@
 import type { Request, Response } from 'express';
 import type { Estudiante, EstudiantePatchQuery } from '../types/estudiante.interface.js';
-import { estudiantes } from '../types/estudiante.interface.js';
+import { loadEstudianteDB, saveEstudianteDB } from '../data/estudiante.conect.js';
 import type { RequestQuery } from '../types/global.types.js';
 
 // Método para retornar querys o la lista completa de estudiantes
-export const getQueryEstudiantes = ((req: Request<EstudiantePatchQuery>, res: Response) => {
+export const getQueryEstudiantes = (async (req: Request<EstudiantePatchQuery>, res: Response) => {
     try {
+        let estudiantes: Estudiante[] = await loadEstudianteDB();
         if (estudiantes.length === 0) {
             return res.status(400).json({ status: 'La Base de Datos <Estudiante>, esta vacia.' });
         }
@@ -44,8 +45,9 @@ export const getQueryEstudiantes = ((req: Request<EstudiantePatchQuery>, res: Re
 });
 
 // Método retorna al estudiante con el ID especificado
-export const getIdEstudiante = ((req: Request, res: Response) => {
+export const getIdEstudiante = (async (req: Request, res: Response) => {
     try {
+        let estudiantes: Estudiante[] = await loadEstudianteDB();
         const id = Number(req.params.id);
         const estudianteSearch = estudiantes.find((e: Estudiante) => e.id === id);
         if (!estudianteSearch) {
@@ -60,8 +62,9 @@ export const getIdEstudiante = ((req: Request, res: Response) => {
 });
 
 // Método para guardar a un estudiante nuevo
-export const newEstudiante = ((req: Request, res: Response) => {
+export const newEstudiante = (async (req: Request, res: Response) => {
     try {
+        let estudiantes: Estudiante[] = await loadEstudianteDB();
         const { name, email, bootcamp } = req.body;
         if (!email) {
             return res.status(400).json({ error: "El campo 'email' es obligatorio." })
@@ -74,6 +77,7 @@ export const newEstudiante = ((req: Request, res: Response) => {
             bootcamp: bootcamp ?? ''
         }
         estudiantes.push(newEstudiante);
+        await saveEstudianteDB(estudiantes);
         res.status(201).json(newEstudiante);
     } catch (error) {
         const msgError = error instanceof Error ? error.message : 'Error interno desconocido';
@@ -83,8 +87,9 @@ export const newEstudiante = ((req: Request, res: Response) => {
 });
 
 // Método para actualización de todos los datos del estudiante por su ID
-export const actualizarTodoEstudiante = ((req: Request, res: Response) => {
+export const actualizarTodoEstudiante = (async (req: Request, res: Response) => {
     try {
+        let estudiantes: Estudiante[] = await loadEstudianteDB();
         const id: number = Number(req.params.id);
         const index: number = estudiantes.findIndex(e => e.id === id);
         if (index === -1) {
@@ -100,6 +105,7 @@ export const actualizarTodoEstudiante = ((req: Request, res: Response) => {
             email,
             bootcamp: bootcamp ?? ''
         };
+        await saveEstudianteDB(estudiantes);
         res.status(200).json({ 'Actualización Exitosa': estudiantes[index] });
     } catch (error) {
         const msgError = error instanceof Error ? error.message : 'Error interno desconocido';
@@ -109,8 +115,9 @@ export const actualizarTodoEstudiante = ((req: Request, res: Response) => {
 });
 
 // Método para actualización de algun data del estudiante por su ID
-export const actualizarAlgunDatoEstudiante = ((req: Request, res: Response) => {
+export const actualizarAlgunDatoEstudiante = (async (req: Request, res: Response) => {
     try {
+        let estudiantes: Estudiante[] = await loadEstudianteDB();
         const id: number = Number(req.params.id);
         const index: number = estudiantes.findIndex(e => e.id === id);
         if (index === -1) {
@@ -124,6 +131,7 @@ export const actualizarAlgunDatoEstudiante = ((req: Request, res: Response) => {
             email: email ?? currentEstudiante.email,
             bootcamp: bootcamp ?? currentEstudiante.bootcamp
         };
+        await saveEstudianteDB(estudiantes);
         res.status(200).json({ 'Actualización Exitosa': estudiantes[index] });
     } catch (error) {
         const msgError = error instanceof Error ? error.message : 'Error interno desconocido';
@@ -133,14 +141,16 @@ export const actualizarAlgunDatoEstudiante = ((req: Request, res: Response) => {
 });
 
 // Método para eliminar un estudiante por su ID
-export const eliminarEstudiante = ((req: Request, res: Response) => {
+export const eliminarEstudiante = (async (req: Request, res: Response) => {
     try {
+        let estudiantes: Estudiante[] = await loadEstudianteDB();
         const id: number = Number(req.params.id);
         const index: number = estudiantes.findIndex(e => e.id === id);
         if (index === -1) {
             return res.status(404).json({ error: `El estudiante con el id = ${id}, no existe.` })
         }
         const [deleteEstudiante] = estudiantes.splice(index, 1);
+        await saveEstudianteDB(estudiantes);
         res.status(200).json({ 'Estudiante eliminado': deleteEstudiante });
     } catch (error) {
         const msgError = error instanceof Error ? error.message : 'Error interno desconocido';

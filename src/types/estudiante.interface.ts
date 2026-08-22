@@ -7,6 +7,3 @@ export interface Estudiante {
 };
 
 export type EstudiantePatchQuery = Partial<Omit<Estudiante, 'id'>>;
-
-// Se inicializa el array de objetos 'Estudiante'
-export const estudiantes: Estudiante[] = [];
